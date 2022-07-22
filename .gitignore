@@ -1,0 +1,8 @@
+# byte-compiled
+__pycache__/
+*.py[cod]
+*$py.class
+
+# ide
+**.idea**
+**.vscode**
