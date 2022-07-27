@@ -9,3 +9,6 @@ __pycache__/
 
 # files
 *.lock
+
+# folders
+dist
