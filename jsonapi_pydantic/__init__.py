@@ -1,5 +1,5 @@
-from jsonapi_pydantic import v1_0
+from jsonapi_pydantic import constants, v1_0
 
-__version__ = "0.1.1"
+__version__ = "0.1.2"
 
-__all__ = ["v1_0"]
+__all__ = ["constants", "v1_0"]
