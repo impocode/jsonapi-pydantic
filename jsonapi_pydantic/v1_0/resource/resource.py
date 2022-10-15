@@ -25,16 +25,24 @@ class Resource(BaseModel):
     def check_all_values(cls, values: dict) -> dict:
         # More about these restrictions: https://jsonapi.org/format/#document-resource-object-fields
         attributes, relationships = values.get("attributes"), values.get("relationships")
+        try:
+            attributes, relationships = dict(attributes), dict(relationships)
+        except ValueError:
+            raise ValueError("Attributes and relationships must be json objects.")
+
         if attributes and (attributes.get("id") or attributes.get("type")):
             raise ValueError("Attributes can not have keys named id or type.")
+
         if relationships and (relationships.get("id") or relationships.get("type")):
             raise ValueError("Relationships can not have keys named id or type.")
+
         if attributes and relationships:
             for key in attributes:
                 if relationships.get(key):
                     raise ValueError(
                         f"A resource can not have an attribute and relationship with the same name. Name: {key}."
                     )
+
         return values
 
 
