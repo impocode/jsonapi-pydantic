@@ -21,7 +21,7 @@ Meta = Optional[MetaObject]
 
 JsonApi = Optional[JsonApiObject]
 Links = Optional[LinksObject]
-Included = Union[None, conlist(Resource, min_items=1, unique_items=True)]
+Included = Optional[conlist(Resource, min_items=0, unique_items=True)]
 
 
 class TopLevel(BaseModel):
