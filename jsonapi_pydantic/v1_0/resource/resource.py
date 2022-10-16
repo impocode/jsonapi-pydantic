@@ -23,10 +23,14 @@ class Resource(BaseModel):
 
     @root_validator
     def check_all_values(cls, values: dict) -> dict:
+        attributes, relationships = values.get("attributes"), values.get("relationships")
+        if not attributes and not relationships:
+            return values
+
         # More about these restrictions: https://jsonapi.org/format/#document-resource-object-fields
         try:
-            attributes = dict(values.get("attributes"))
-            relationships = dict(values.get("relationships"))
+            attributes = dict(attributes) if attributes else attributes
+            relationships = dict(relationships) if relationships else relationships
         except (ValueError, TypeError):
             raise ValueError("Attributes and relationships must be json objects.")
 

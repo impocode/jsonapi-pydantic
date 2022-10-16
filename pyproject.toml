@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "jsonapi-pydantic"
-version = "0.1.2"
+version = "0.1.3"
 description = "JSON:API implementation with pydantic."
 
 authors = ["impocode <impocode@impocode.com>"]
