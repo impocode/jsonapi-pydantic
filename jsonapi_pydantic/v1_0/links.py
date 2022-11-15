@@ -20,6 +20,6 @@ class Link(BaseModel):
         return values
 
 
-Links = Dict[str, Union[AnyUrl, Link]]
+Links = Dict[str, Union[AnyUrl, Link, None]]
 
 __all__ = ["Link"]
