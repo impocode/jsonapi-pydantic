@@ -1,6 +1,8 @@
-from typing import List, Optional, Union
+from typing import List, Optional, Set, Union
 
-from pydantic import BaseModel, Field, conlist, root_validator
+from pydantic.fields import Field
+from pydantic.functional_validators import model_validator
+from pydantic.main import BaseModel
 
 from jsonapi_pydantic.v1_0.error import Error
 from jsonapi_pydantic.v1_0.jsonapi import JsonApi as JsonApiObject
@@ -13,40 +15,40 @@ Data = Union[
     None,
     Resource,
     ResourceIdentifier,
-    conlist(Resource, min_items=0, unique_items=True),
-    conlist(ResourceIdentifier, min_items=0, unique_items=True),
+    Set[Resource],
+    Set[ResourceIdentifier],
 ]
 Errors = Optional[List[Error]]
 Meta = Optional[MetaObject]
 
 JsonApi = Optional[JsonApiObject]
 Links = Optional[LinksObject]
-Included = Optional[conlist(Resource, min_items=0, unique_items=True)]
+Included = Optional[Set[Resource]]
 
 
 class TopLevel(BaseModel):
-    data: Data = Field(title="Data")
-    errors: Errors = Field(title="Errors")
-    meta: Meta = Field(title="Meta")
+    data: Data = Field(None, title="Data")
+    errors: Errors = Field(None, title="Errors")
+    meta: Meta = Field(None, title="Meta")
 
-    jsonapi: JsonApi = Field(title="JSON:API")
-    links: Links = Field(title="Links")
-    included: Included = Field(title="Included")
+    jsonapi: JsonApi = Field(None, title="JSON:API")
+    links: Links = Field(None, title="Links")
+    included: Included = Field(None, title="Included")
 
-    @root_validator
-    def check_all_values(cls, values: dict) -> dict:
+    @model_validator(mode="before")
+    def check_all_values(cls, data: dict) -> dict:
         # More about these restrictions: https://jsonapi.org/format/#document-top-level
-        if values.get("data") and values.get("errors"):
+        if data.get("data") and data.get("errors"):
             raise ValueError("The members data and errors MUST NOT coexist in the same document.")
-        if values.get("included") and not values.get("data"):
+        if data.get("included") and not data.get("data"):
             raise ValueError(
                 "If a document does not contain a top-level data key, the included member MUST NOT be present either."
             )
-        if not values.get("data") and not values.get("errors") and not values.get("meta"):
+        if not data.get("data") and not data.get("errors") and not data.get("meta"):
             raise ValueError(
                 "A document MUST contain at least one of the following top-level members: data, errors, meta."
             )
-        return values
+        return data
 
 
 __all__ = ["TopLevel"]

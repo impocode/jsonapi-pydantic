@@ -1,6 +1,8 @@
 from typing import Any, Dict, Optional
 
-from pydantic import BaseModel, Field, root_validator
+from pydantic.fields import Field
+from pydantic.functional_validators import model_validator
+from pydantic.main import BaseModel
 
 from jsonapi_pydantic.v1_0.links import Links as LinksObject
 from jsonapi_pydantic.v1_0.meta import Meta as MetaObject
@@ -15,17 +17,17 @@ Meta = Optional[MetaObject]
 
 class Resource(BaseModel):
     type: str = Field(title="Type")
-    id: Id = Field(title="Id")
-    attributes: Attributes = Field(title="Attributes")
-    relationships: Relationships = Field(title="Relationships")
-    links: Links = Field(title="Links")
-    meta: Meta = Field(title="Meta")
+    id: Id = Field(None, title="Id")
+    attributes: Attributes = Field(None, title="Attributes")
+    relationships: Relationships = Field(None, title="Relationships")
+    links: Links = Field(None, title="Links")
+    meta: Meta = Field(None, title="Meta")
 
-    @root_validator
-    def check_all_values(cls, values: dict) -> dict:
-        attributes, relationships = values.get("attributes"), values.get("relationships")
+    @model_validator(mode="before")
+    def check_all_values(cls, data: dict) -> dict:
+        attributes, relationships = data.get("attributes"), data.get("relationships")
         if not attributes and not relationships:
-            return values
+            return data
 
         # More about these restrictions: https://jsonapi.org/format/#document-resource-object-fields
         try:
@@ -47,7 +49,7 @@ class Resource(BaseModel):
                         f"A resource can not have an attribute and relationship with the same name. Name: {key}."
                     )
 
-        return values
+        return data
 
 
 __all__ = ["Resource"]
