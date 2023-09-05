@@ -1,4 +1,4 @@
-from typing import List, Optional, Set, Union
+from typing import List, Optional, Union
 
 from pydantic.fields import Field
 from pydantic.functional_validators import model_validator
@@ -15,15 +15,15 @@ Data = Union[
     None,
     Resource,
     ResourceIdentifier,
-    Set[Resource],
-    Set[ResourceIdentifier],
+    List[Resource],
+    List[ResourceIdentifier],
 ]
 Errors = Optional[List[Error]]
 Meta = Optional[MetaObject]
 
 JsonApi = Optional[JsonApiObject]
 Links = Optional[LinksObject]
-Included = Optional[Set[Resource]]
+Included = Optional[List[Resource]]
 
 
 class TopLevel(BaseModel):

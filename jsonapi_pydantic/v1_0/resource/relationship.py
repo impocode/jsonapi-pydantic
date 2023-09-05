@@ -1,4 +1,4 @@
-from typing import Optional, Set, Union
+from typing import List, Optional, Union
 
 from pydantic.fields import Field
 from pydantic.functional_validators import model_validator
@@ -9,7 +9,7 @@ from jsonapi_pydantic.v1_0.resource.relationship_links import RelationshipLinks
 from jsonapi_pydantic.v1_0.resource_identifier import ResourceIdentifier
 
 Links = Optional[RelationshipLinks]
-ResourceLinkage = Union[None, ResourceIdentifier, Set[ResourceIdentifier]]
+ResourceLinkage = Union[None, ResourceIdentifier, List[ResourceIdentifier]]
 Meta = Optional[MetaObject]
 
 
