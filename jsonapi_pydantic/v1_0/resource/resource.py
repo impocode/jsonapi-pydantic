@@ -1,5 +1,6 @@
 from typing import Any, Dict, Optional
 
+from pydantic.config import ConfigDict
 from pydantic.fields import Field
 from pydantic.functional_validators import model_validator
 from pydantic.main import BaseModel
@@ -22,6 +23,8 @@ class Resource(BaseModel):
     relationships: Relationships = Field(None, title="Relationships")
     links: Links = Field(None, title="Links")
     meta: Meta = Field(None, title="Meta")
+
+    model_config = ConfigDict(frozen=True)
 
     @model_validator(mode="before")
     def check_all_values(cls, data: dict) -> dict:
