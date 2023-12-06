@@ -26,16 +26,15 @@ class Resource(BaseModel):
 
     model_config = ConfigDict(frozen=True)
 
-    @model_validator(mode="before")
-    def check_all_values(cls, data: dict) -> dict:
-        attributes, relationships = data.get("attributes"), data.get("relationships")
-        if not attributes and not relationships:
-            return data
+    @model_validator(mode="after")
+    def check_all_values(self) -> "Resource":
+        if not self.attributes and not self.relationships:
+            return self
 
         # More about these restrictions: https://jsonapi.org/format/#document-resource-object-fields
         try:
-            attributes = dict(attributes) if attributes else attributes
-            relationships = dict(relationships) if relationships else relationships
+            attributes = dict(self.attributes) if self.attributes else self.attributes
+            relationships = dict(self.relationships) if self.relationships else self.relationships
         except (ValueError, TypeError):
             raise ValueError("Attributes and relationships must be json objects.")
 
@@ -52,7 +51,7 @@ class Resource(BaseModel):
                         f"A resource can not have an attribute and relationship with the same name. Name: {key}."
                     )
 
-        return data
+        return self
 
 
 __all__ = ["Resource"]
