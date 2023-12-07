@@ -38,7 +38,7 @@ class TopLevel(BaseModel):
     @model_validator(mode="before")
     def check_all_values(cls, data: dict) -> dict:
         # More about these restrictions: https://jsonapi.org/format/#document-top-level
-        if data.get("data") and data.get("errors"):
+        if data.get("data") is None and data.get("errors"):
             raise ValueError("The members data and errors MUST NOT coexist in the same document.")
         if data.get("included") and not data.get("data"):
             raise ValueError(
