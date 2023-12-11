@@ -1,4 +1,4 @@
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Union, List
 
 from pydantic.config import ConfigDict
 from pydantic.fields import Field
@@ -11,7 +11,7 @@ from jsonapi_pydantic.v1_0.resource.relationship import Relationship
 
 Id = Optional[str]
 Attributes = Optional[Dict[str, Any]]
-Relationships = Optional[Dict[str, Relationship]]
+Relationships = Optional[Dict[str, Union[Relationship, List[Relationship]]]]
 Links = Optional[LinksObject]
 Meta = Optional[MetaObject]
 
