@@ -53,7 +53,7 @@ external_data = {
 
 top_level = TopLevel(**external_data)
 
-print(top_level.dict(exclude_unset=True))
+print(top_level.model_dump(exclude_unset=True))
 """
 {
     "data": [
@@ -97,6 +97,10 @@ print(top_level.data)
 ]
 """
 ```
+
+## Examples
+
+More examples can be found [here](https://github.com/impocode/jsonapi-pydantic/tree/master/examples).
 
 ## License
 
