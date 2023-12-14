@@ -1,4 +1,4 @@
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Hashable
 
 from pydantic.config import ConfigDict
 from pydantic.fields import Field
@@ -16,7 +16,7 @@ Links = Optional[LinksObject]
 Meta = Optional[MetaObject]
 
 
-class Resource(BaseModel):
+class Resource(BaseModel, Hashable):
     type: str = Field(title="Type")
     id: Id = Field(None, title="Id")
     attributes: Attributes = Field(None, title="Attributes")
@@ -25,6 +25,9 @@ class Resource(BaseModel):
     meta: Meta = Field(None, title="Meta")
 
     model_config = ConfigDict(frozen=True)
+
+    def __hash__(self) -> int:
+        return hash(self.type + self.id)
 
     @model_validator(mode="after")
     def check_all_values(self) -> "Resource":

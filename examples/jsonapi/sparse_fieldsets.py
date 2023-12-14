@@ -24,6 +24,7 @@ expected_data = {
     ],
 }
 
+assert expected_data == TopLevel(**expected_data), "Objects are not equal."
 
 data = [
     Resource(
@@ -42,6 +43,7 @@ included = [
     Resource(type="people", id="42", attributes={"name": "John", "age": 80, "gender": "male"})
 ]
 top_level = TopLevel(data=data, included=included)
+
 
 assert expected_data == top_level.model_dump(exclude_unset=True), "Objects are not equal."
 
