@@ -38,13 +38,13 @@ class TopLevel(BaseModel):
     @model_validator(mode="before")
     def check_all_values(cls, data: dict) -> dict:
         # More about these restrictions: https://jsonapi.org/format/#document-top-level
-        if data.get("data") and data.get("errors"):
+        if "data" in data and "errors" in data:
             raise ValueError("The members data and errors MUST NOT coexist in the same document.")
-        if data.get("included") and not data.get("data"):
+        if "included" in data and "data" not in data:
             raise ValueError(
                 "If a document does not contain a top-level data key, the included member MUST NOT be present either."
             )
-        if not data.get("data") and not data.get("errors") and not data.get("meta"):
+        if "data" not in data and "errors" not in data and "meta" not in data:
             raise ValueError(
                 "A document MUST contain at least one of the following top-level members: data, errors, meta."
             )
