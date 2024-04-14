@@ -40,14 +40,24 @@ class TopLevel(BaseModel):
         # More about these restrictions: https://jsonapi.org/format/#document-top-level
         if "data" in data and "errors" in data:
             raise ValueError("The members data and errors MUST NOT coexist in the same document.")
+
         if "included" in data and "data" not in data:
             raise ValueError(
                 "If a document does not contain a top-level data key, the included member MUST NOT be present either."
             )
+
         if "data" not in data and "errors" not in data and "meta" not in data:
             raise ValueError(
                 "A document MUST contain at least one of the following top-level members: data, errors, meta."
             )
+
+        if isinstance(data.get("data"), list):
+            hashes = {d._hash for d in data["data"]}
+            if len(data["data"]) > len(hashes):
+                raise ValueError(
+                    "A compound document MUST NOT include more than one resource object for each type and id pair."
+                )
+
         return data
 
 
