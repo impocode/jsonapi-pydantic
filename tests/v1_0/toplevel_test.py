@@ -4,7 +4,17 @@ from pydantic import ValidationError
 from jsonapi_pydantic.v1_0 import Resource, ResourceIdentifier, TopLevel
 
 
-def test_toplevel_unique_resource():
+def test_toplevel_serialization(external_data: dict) -> None:
+    TopLevel(**external_data)
+
+
+def test_toplevel_deserialization(external_data: dict) -> None:
+    top_level = TopLevel(**external_data)
+    dump = top_level.model_dump(exclude_unset=True)
+    assert isinstance(dump, dict)
+
+
+def test_toplevel_unique_resource() -> None:
     with pytest.raises(
         ValidationError,
         match="A compound document MUST NOT include more than one resource object for each type and id pair.",
@@ -35,7 +45,7 @@ def test_toplevel_unique_resource():
         )
 
 
-def test_toplevel_unique_resource_identifier():
+def test_toplevel_unique_resource_identifier() -> None:
     with pytest.raises(
         ValidationError,
         match="A compound document MUST NOT include more than one resource object for each type and id pair.",

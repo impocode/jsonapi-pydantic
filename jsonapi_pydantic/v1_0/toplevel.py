@@ -1,4 +1,4 @@
-from typing import List, Optional, Union
+from typing import List, Optional, Self, Union
 
 from pydantic.fields import Field
 from pydantic.functional_validators import model_validator
@@ -51,14 +51,17 @@ class TopLevel(BaseModel):
                 "A document MUST contain at least one of the following top-level members: data, errors, meta."
             )
 
-        if isinstance(data.get("data"), list):
-            hashes = {d._hash for d in data["data"]}
-            if len(data["data"]) > len(hashes):
+        return data
+
+    @model_validator(mode="after")
+    def check_unique_resource(self) -> Self:
+        if isinstance(self.data, list):
+            hashes = {d._hash for d in self.data}
+            if len(self.data) > len(hashes):
                 raise ValueError(
                     "A compound document MUST NOT include more than one resource object for each type and id pair."
                 )
-
-        return data
+        return self
 
 
 __all__ = ["TopLevel"]
