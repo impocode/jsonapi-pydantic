@@ -3,8 +3,8 @@ name = "jsonapi-pydantic"
 version = "0.2.4"
 description = "JSON:API implementation with pydantic."
 
-authors = ["impocode <impocode@impocode.com>"]
-maintainers = ["impocode <impocode@impocode.com>"]
+authors = ["impocode <impocode@impocode.one>"]
+maintainers = ["impocode <impocode@impocode.one>"]
 
 license= "MIT"
 readme = "readme.md"
@@ -33,18 +33,22 @@ pydantic = "^2.1.1"
 "Bug Tracker" = "https://github.com/impocode/jsonapi-pydantic/issues"
 
 [tool.poetry.group.dev.dependencies]
-black = "^23.12.0"
-isort = "^5.13.2"
-flake8 = "^6.1.0"
+ruff = "^0.4.8"
 pytest = "^8.1.1"
 
-[tool.isort]
-line_length = 100
-multi_line_output = 3
-include_trailing_comma = false
-
-[tool.black]
+[tool.ruff]
 line-length = 100
+
+[tool.ruff.lint]
+select = [
+    "F",  # pyflakes
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "I",  # isort
+    "UP", # pyupgrade
+    "B",  # flake8-bugbear
+    "C4", # flake8-comprehensions
+]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

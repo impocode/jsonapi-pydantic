@@ -1,8 +1,6 @@
-style:
-	black .
-	isort .
-	flake8 .
-
 test:
-	pytest tests
+	poetry run pytest . -x
 
+style:
+	poetry run ruff format
+	poetry run ruff check --fix --show-fixes
