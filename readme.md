@@ -105,3 +105,7 @@ More examples can be found [here](https://github.com/impocode/jsonapi-pydantic/t
 ## License
 
 See [license.md](https://github.com/impocode/jsonapi-pydantic/blob/master/license.md).
+
+## Thank you
+
+If you like this open source project, I'd really appreciate it if you put a star. Thank you!
